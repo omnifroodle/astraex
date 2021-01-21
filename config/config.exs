@@ -27,4 +27,12 @@ use Mix.Config
 # Configuration from the imported file will override the ones defined
 # here (which is why it is important to import them last).
 #
+
+
+config :astra,
+  id: System.get_env("ASTRA_ID"),
+  region: System.get_env("ASTRA_REGION"),
+  username: System.get_env("ASTRA_USERNAME"),
+  password: System.get_env("ASTRA_PASSWORD")
+  
 import_config "#{Mix.env()}.exs"

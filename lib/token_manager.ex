@@ -1,4 +1,5 @@
 defmodule Astra.TokenManager do
+  @moduledoc false
   use GenServer
   require Logger
   @update_interval 1_700_000
@@ -18,7 +19,8 @@ defmodule Astra.TokenManager do
 
   @impl true
   def init(:ok) do
-    Process.send_after(self(), :tick, 1_700_000)
+    #schedule a regular update of the security token
+    Process.send_after(self(), :tick, @update_interval)
     {:ok, pget_token()}
   end
 
