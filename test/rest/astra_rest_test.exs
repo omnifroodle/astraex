@@ -46,4 +46,9 @@ defmodule AstraRestTest do
     assert {:ok, []} = Astra.Rest.get_row("test", "thing", Map.get(row, :id))
   end
   
+  test "search" do
+    {:ok, data} = Astra.Rest.search_table("test", "thing", %{name: %{"$eq": "test row"}})  
+    assert Enum.count(data) >= 1
+  end
+  
 end

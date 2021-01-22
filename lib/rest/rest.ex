@@ -1,8 +1,9 @@
 defmodule Astra.Rest do
   alias Astra.Rest.Http
   @moduledoc """
-  `Astra.Rest` provides functions to access the public methods of the REST interface for Astra.
-  Astra's REST interface is implemented using the stargate project, https://stargate.io.  Swagger docs for this interface are available here https://docs.astra.datastax.com/reference#keyspaces-2.
+  `Astra.Rest` provides functions to access the public methods of the REST interface for databases hosed on https://astra.datastax.com.
+  
+  Astra's REST interface is implemented using the stargate project, https://stargate.io. Swagger docs for this interface are available here https://docs.astra.datastax.com/reference#keyspaces-2.
   
   If required, raw access to the Astra REST api can be obtained through the `Astra.Rest.Http` module.
   """
@@ -23,8 +24,8 @@ defmodule Astra.Rest do
   def get_row(keyspace, table, primary_key), do: Http.get("#{keyspace}/#{table}/#{primary_key}") |> Http.parse_response
 
   @doc """
-  lazy create using POST, no explicit key required (though it must still exist in the entity)
-
+  Add a row. All fields in the row are optional except for fields defined in the `PRIMARY KEY` of the table definition.
+  
   ## Parameters
   
     - keyspace: the keyspace containing the target table
@@ -135,6 +136,39 @@ defmodule Astra.Rest do
   def delete_row(keyspace, table, key), do: Http.delete("#{keyspace}/#{table}/#{key}") |> Http.parse_response
   
   # search a table
+  
+  # CREATE CUSTOM INDEX things_name_idx ON thing (name) USING 'StorageAttachedIndex' WITH OPTIONS = {'normalize': 'true', 'case_sensitive': 'false'};
+  @doc """
+  Search for rows in a table. The following operators are available for the query: `$eq`, `$lt`, `$lte`, `$gt`, `$gte`, `$ne`, and `$exists`.
+  
+  Please note that some restrictions exist for searches:
+  
+  1. Search cannot be on a `PRIMARY KEY` field, unless a composite primary key is being used.
+  2. Search fields will require some form of secondary index.  SAI is usually the best choice https://docs.astra.datastax.com/docs/using-storage-attached-indexing-sai
+  
+  Example of creating an SAI index on a table:
+  ```
+  CREATE TABLE thing (
+    id text PRIMARY KEY,
+    name text
+  ) 
+  
+  CREATE CUSTOM INDEX things_name_idx 
+    ON thing (name) USING 'StorageAttachedIndex' 
+    WITH OPTIONS = {'normalize': 'true', 'case_sensitive': 'false'};
+  ```
+  ## Parameters
+  
+    - keyspace: the keyspace containing the target table
+    - table: the table containing the entity we are retrieving
+    - query: the search query for the table. ex. `%{name: %{"$in": ["red", "blue"]}}`
+  ## Examples
+  
+  ```
+    > Astra.Rest.search_table("test", "thing", %{name: %{"$eq": "test row"}}) 
+  ```
+  
+  """
   @spec search_table(String, String, Map) :: {Atom, []}
-  def search_table(keyspace, table, query), do: Http.get("#{keyspace}/#{table}", Http.json!(query)) |> Http.parse_response
+  def search_table(keyspace, table, query), do: Http.get("#{keyspace}/#{table}",[], params: %{where: Http.json!(query)}) |> Http.parse_response
 end
