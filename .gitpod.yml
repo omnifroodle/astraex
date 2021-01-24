@@ -3,7 +3,7 @@ image:
 
 tasks:
   - init: 'echo "TODO: Replace with init/build command"'
-    command: 'mix docs & ruby -run -ehttpd doc -p8000'
+    command: 'mix docs; ruby -run -ehttpd doc -p8000'
 
 vscode:
   extensions:
