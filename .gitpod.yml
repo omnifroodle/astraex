@@ -3,8 +3,9 @@ image:
 
 tasks:
   - init: 'echo "TODO: Replace with init/build command"'
-    command: 'echo "TODO: Replace with command to start project"'
+    command: 'mix docs & ruby -run -ehttpd doc -p8000'
 
 vscode:
   extensions:
     - elixir-lsp.elixir-ls@0.6.2:j/OgOgkgo0QJRBdZXhmoUQ==
+    - streetsidesoftware.code-spell-checker@1.10.2:IKNWSiKNhoiWZ0g+IVw/mA==
