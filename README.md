@@ -2,7 +2,11 @@
 
 An elixir plugin for interacting with DataStax Astra or any stargate.io fronted storage!
 
-Currently only the REST API is supported, but Document/GraphQL/Schema should be available soon.
+Currently supports
+  - REST API
+  - Document API
+
+GraphQL/Schema should be available soon.
 
 To use, setup an Astra instance at https://astra.datastax.com.
 
