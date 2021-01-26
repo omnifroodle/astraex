@@ -125,15 +125,129 @@ defmodule Astra.Document do
   @spec post_doc(String, String, Map) :: {Atom, Map}
   def post_doc(namespace, collection, document), do: Http.post("#{namespace}/collections/#{collection}", Http.json!(document)) |> Http.parse_response
   
+  @doc """
+  
+  get a document by id
+  
+  ## Parameters
+  
+    - namespace: namespace name
+    - collection: name of the document collection
+    - id: the id of the document to retrieve 
+    
+  ## Examples
+  
+  ```
+    > Astra.Document.get_doc("test", "docs", id)
+    {:ok, %{name: "other-stuff", other: "This makes no sense"}}
+  ```
+  
+  """
+  @spec get_doc(String, String, String) :: {Atom, Map}
   def get_doc(namespace, collection, id), do: Http.get("#{namespace}/collections/#{collection}/#{id}") |> Http.parse_response
 
-  def get_sub_doc(namespace, collection, id, path), do: Http.get("#{namespace}/collections/#{collection}/#{id}/#{path}") |> Http.parse_response
+  @doc """
   
-  def delete_doc(namespace, collection, id), do: Http.delete("#{namespace}/collections/#{collection}/#{id}") |> Http.parse_response
+  get a sub document by id
+  
+  ## Parameters
+  
+    - namespace: namespace name
+    - collection: name of the document collection
+    - id: the id of the document to retrieve
+    - path: the path to the subdocument. Nested paths can be matched by joining the keys with a `\\`, ex. `address\\city` 
 
-  def delete_sub_doc(namespace, collection, id, path), do: Http.delete("#{namespace}/collections/#{collection}/#{id}/#{path}") |> Http.parse_response
+    
+  ## Examples
   
-  def search_docs(namespace, collection, where, options) when is_map(where) do
+  ```
+    doc = %{ 
+      name: "other-stuff",
+      other: %{ first: "thing", last: "thing"}
+    }
+    > {:ok, %{documentId: id}} = Astra.Document.post_doc("test", "docs", doc)
+    > Astra.Document.get_sub_doc("test", "docs", id, "other")
+    {:ok, %{ first: "thing", last: "thing"}}
+  ```
+  
+  """
+  @spec get_sub_doc(String, String, String, String) :: {Atom, Map}
+  def get_sub_doc(namespace, collection, id, path), do: Http.get("#{namespace}/collections/#{collection}/#{id}/#{path}") |> Http.parse_response
+
+  @doc """
+  
+  delete a document
+  
+  ## Parameters
+  
+    - namespace: namespace name
+    - collection: name of the document collection
+    - id: the id of the document to destroy
+    
+  ## Examples
+  
+  ```
+    > Astra.Document.delete_doc("test", "docs", id)
+    {:ok, []}
+  ```
+  
+  """
+  @spec delete_doc(String, String, String) :: {Atom, []}
+  def delete_doc(namespace, collection, id), do: Http.delete("#{namespace}/collections/#{collection}/#{id}") |> Http.parse_response
+  
+  @doc """
+  
+  delete a sub document
+  
+  ## Parameters
+  
+    - namespace: namespace name
+    - collection: name of the document collection
+    - id: the id of the document to destroy
+    - path: the path to the subdocument. Nested paths can be matched by joining the keys with a `\\`, ex. `address\\city` 
+
+    
+  ## Examples
+  
+  ```
+    doc = %{ 
+      name: "other-stuff",
+      other: %{ first: "thing", last: "thing"}
+    }
+    > {:ok, %{documentId: id}} = Astra.Document.post_doc("test", "docs", doc)
+    > Astra.Document.get_sub_doc("test", "docs", id, "other")
+    {:ok, %{ first: "thing", last: "thing"}}
+  ```
+  
+  """
+  @spec delete_sub_doc(String, String, String, String) :: {Atom, []}
+  def delete_sub_doc(namespace, collection, id, path), do: Http.delete("#{namespace}/collections/#{collection}/#{id}/#{path}") |> Http.parse_response
+    
+  @doc """
+  
+  search for documents in a collection
+  
+  ## Parameters
+  
+    - namespace: namespace name
+    - collection: name of the document collection
+    - where: search clause for matching documents
+    - options: Valid options [:fields, :"page-size", :"page-state", :sort]
+
+  ## Examples
+  
+  ```
+    > query = %{
+      other: %{
+        "$eq": uuid
+      }
+    }
+    > Astra.Document.search_docs("test", "docs", query, %{"page-size": 20})
+  ```
+  
+  """
+  @spec search_docs(String, String, Map, Map) :: {Atom, Map}
+  def search_docs(namespace, collection, where, options) do
     params = Map.take(options, [:fields, :"page-size", :"page-state", :sort])
       |> Map.put(:where, Http.json!(where))
 
