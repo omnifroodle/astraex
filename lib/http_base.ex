@@ -11,7 +11,11 @@ defmodule Astra.HttpBase do
       def parse_response({:ok, %HTTPoison.Response{status_code: 200, body: body}}), do: {:ok, Map.get(Jason.decode!(body, keys: :atoms), :data)}
       def parse_response({:ok, %HTTPoison.Response{status_code: 201, body: body}}), do: {:ok, Jason.decode!(body, keys: :atoms)}
       def parse_response({:ok, %HTTPoison.Response{status_code: 204}}), do: {:ok, []}
+      
+      def parse_response({:ok, %HTTPoison.Response{status_code: 401}}), do: {:rejected, "unauthorized"}
       def parse_response({:ok, %HTTPoison.Response{status_code: 409}}), do: {:rejected, "duplicate"}
+      
+      #fallback
       def parse_response(resp), do: {:error, resp}
 
       def process_request_url(sub_path), do: unquote(url <> path) <> sub_path
@@ -30,6 +34,7 @@ defmodule Astra.HttpBase do
         {:ok, body} = Jason.encode(entity)
         body
       end
+      defoverridable Module.definitions_in(__MODULE__)
     end
   end
 end

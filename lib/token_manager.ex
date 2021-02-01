@@ -21,7 +21,7 @@ defmodule Astra.TokenManager do
   def init(:ok) do
     #schedule a regular update of the security token
     Process.send_after(self(), :tick, @update_interval)
-    {:ok, pget_token()}
+    {:ok, get_new_token()}
   end
 
   @impl true
@@ -36,21 +36,15 @@ defmodule Astra.TokenManager do
 
   @impl true
   def handle_info(:tick, _) do
-    token = pget_token()
+    token = get_new_token()
     Process.send_after(self(), :tick, @update_interval)
     {:noreply, token}
   end
 
-
-  defp pget_token do
-    case HTTPoison.post "#{@auth_url}/v1/auth",
-      "{\"username\": \"#{@config[:username]}\", \"password\": \"#{@config[:password]}\"}",
-      [{"Content-Type", "application/json"},
-      {"accept", "*/*"},
-      {"x-cassandra-request-id", UUID.uuid1()}],
-      [ssl: [{:versions, [:'tlsv1.2']}]] do
-    {:ok, %HTTPoison.Response{body: body}} ->
-      {:ok, Jason.decode!(body)["authToken"]}
+  def get_new_token do
+    case Astra.Auth.authorize_user(@config[:username], @config[:password]) do
+    {:ok, %{authToken: token}} ->
+      {:ok, token}
     other ->
       Logger.warn("Failed to get Astra token, response was: #{inspect(other)}")
       {:error, "something went wrong!"}
