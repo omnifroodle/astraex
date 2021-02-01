@@ -27,8 +27,8 @@ To connect to Astra add something like the following to your `config.exs`:
 
 ```elixir
 config :astra,
-  id: System.get_env("ASTRA_ID"),
-  region: System.get_env("ASTRA_REGION"),
+  id: System.get_env("ASTRA_ID"), #this is your astra cluster id
+  region: System.get_env("ASTRA_REGION"), #this is the region where your astra cluster is hosted
   username: System.get_env("ASTRA_USERNAME"),
   password: System.get_env("ASTRA_PASSWORD")
 ```
