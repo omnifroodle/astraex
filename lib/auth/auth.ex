@@ -1,6 +1,9 @@
 defmodule Astra.Auth do
   alias Astra.Auth.Http
-  
+  @moduledoc """
+  Provides functions to access the public methods of the Astra Auth API for databases hosted on https://astra.datastax.com. 
+  """
+
   @doc """
   Get a fresh auth token from Astra. Automatically called by the TokenManager app
   

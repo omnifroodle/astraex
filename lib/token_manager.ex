@@ -4,7 +4,6 @@ defmodule Astra.TokenManager do
   require Logger
   @update_interval 1_700_000
   @config Application.get_all_env(:astra)
-  @auth_url "https://#{@config[:id]}-#{@config[:region]}.apps.astra.datastax.com/api/rest"
 
   def start_link(_opts) do
     GenServer.start_link(__MODULE__, :ok, name: __MODULE__)
