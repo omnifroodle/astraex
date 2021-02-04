@@ -2,10 +2,12 @@ image:
   file: .gitpod.Dockerfile
 
 tasks:
-  - init: 'echo "TODO: Replace with init/build command"'
+  - init: 'mix deps.get'
     command: 'mix docs; ruby -run -ehttpd doc -p8000'
+    command: 'mix test.watch --stale'
 
 vscode:
   extensions:
     - elixir-lsp.elixir-ls@0.6.2:j/OgOgkgo0QJRBdZXhmoUQ==
     - streetsidesoftware.code-spell-checker@1.10.2:IKNWSiKNhoiWZ0g+IVw/mA==
+    - elixir-lsp.elixir-ls@0.6.3:oveX4gOB8gr2pzb5+0mGsQ==
