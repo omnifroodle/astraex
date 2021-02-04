@@ -1,13 +1,15 @@
 defmodule Astra.HttpBase do
   @moduledoc false
-  @config Application.get_all_env(:astra)  
+  @config Application.get_all_env(:astra)
+
   
   defmacro __using__(opts) do
     
     path = Keyword.get(opts, :path, "")
     url = "https://#{@config[:id]}-#{@config[:region]}.apps.astra.datastax.com/api/"
-    
+
     quote do
+      require Logger
       def parse_response({:ok, %HTTPoison.Response{status_code: 200, body: body}}), do: {:ok, Map.get(Jason.decode!(body, keys: :atoms), :data)}
       def parse_response({:ok, %HTTPoison.Response{status_code: 201, body: body}}), do: {:ok, Jason.decode!(body, keys: :atoms)}
       def parse_response({:ok, %HTTPoison.Response{status_code: 204}}), do: {:ok, []}
@@ -16,8 +18,11 @@ defmodule Astra.HttpBase do
       def parse_response({:ok, %HTTPoison.Response{status_code: 409}}), do: {:rejected, "duplicate"}
       
       #fallback
-      def parse_response(resp), do: {:error, resp}
-
+      def parse_response(resp) do 
+        Logger.warn "error from Astra: #{inspect resp}"
+        {:error, resp}
+      end
+      
       def process_request_url(sub_path), do: unquote(url <> path) <> sub_path
       
       def process_request_headers(headers) do
