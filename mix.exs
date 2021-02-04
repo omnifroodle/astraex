@@ -18,7 +18,8 @@ defmodule Astra.MixProject do
     [
       groups_for_modules: [
         "API": [Astra.Document, Astra.Rest, Astra.Auth],
-        "Helpers": [Astra.Document.Http, Astra.Rest.Http, Astra.Auth.Http]
+        "Schema API": [Astra.Schema.Document, Astra.Schema.Rest],
+        "Helpers": [Astra.Document.Http, Astra.Rest.Http, Astra.Auth.Http, Astra.Schema.Http]
       ],
       extras: ["README.md"],
       main: "readme"
