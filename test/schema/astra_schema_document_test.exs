@@ -1,6 +1,6 @@
 defmodule AstraSchemaDocumentTest do
   use ExUnit.Case
-  doctest Astra.Schema
+  doctest Astra.Schema.Document
 
   test "get namespaces" do
     {:ok, data} = Astra.Schema.Document.get_namespaces()

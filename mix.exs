@@ -4,7 +4,7 @@ defmodule Astra.MixProject do
   def project do
     [
       app: :astra,
-      version: "0.1.3",
+      version: "0.2.0",
       elixir: "~> 1.8",
       start_permanent: Mix.env() == :prod,
       description: "REST API adapter for astra.datastax.com and stargate.io",
@@ -21,7 +21,7 @@ defmodule Astra.MixProject do
         "Schema API": [Astra.Schema.Document, Astra.Schema.Rest],
         "Helpers": [Astra.Document.Http, Astra.Rest.Http, Astra.Auth.Http, Astra.Schema.Http]
       ],
-      extras: ["README.md"],
+      extras: ["README.md", "CHANGELOG.md"],
       main: "readme"
     ]
   end
