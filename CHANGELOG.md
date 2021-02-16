@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.3.1] - 2021-02-15
+### Fixed
+- More fixes for module attributes that should be adjustable at execution time
+
 ## [0.3.0] - 2021-02-15
 ### Fixed
 - HttpBase url could not be set after compile time because it was define in a module attribute
