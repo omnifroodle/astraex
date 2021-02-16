@@ -6,6 +6,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.3.0] - 2021-02-15
+### Fixed
+- HttpBase url could not be set after compile time because it was define in a module attribute
+### Changed
+- Changed license to Apache 2.0
+
+
 ## [0.2.0] - 2021-02-10
 ### Changed
 - Tesults from the document API no loger return atoms for the keys in their maps.  This was a bad practice for schemaless document storage.

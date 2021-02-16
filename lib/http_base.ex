@@ -1,12 +1,8 @@
 defmodule Astra.HttpBase do
   @moduledoc false
-  @config Application.get_all_env(:astra)
-
-  
-  defmacro __using__(opts) do
     
+  defmacro __using__(opts) do  
     path = Keyword.get(opts, :path, "")
-    url = "https://#{@config[:id]}-#{@config[:region]}.apps.astra.datastax.com/api/"
 
     quote do
       require Logger
@@ -23,7 +19,11 @@ defmodule Astra.HttpBase do
         {:error, resp}
       end
       
-      def process_request_url(sub_path), do: unquote(url <> path) <> sub_path
+      def process_request_url(sub_path) do
+        config = Application.get_all_env(:astra)
+        url = "https://#{config[:id]}-#{config[:region]}.apps.astra.datastax.com/api/"
+        url <> unquote(path) <> sub_path
+      end
       
       def process_request_headers(headers) do
         {:ok, token} = Astra.TokenManager.get_token
