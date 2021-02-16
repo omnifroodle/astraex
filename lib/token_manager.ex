@@ -3,7 +3,6 @@ defmodule Astra.TokenManager do
   use GenServer
   require Logger
   @update_interval 1_700_000
-  @config Application.get_all_env(:astra)
 
   def start_link(_opts) do
     GenServer.start_link(__MODULE__, :ok, name: __MODULE__)
@@ -41,7 +40,8 @@ defmodule Astra.TokenManager do
   end
 
   def get_new_token do
-    case Astra.Auth.authorize_user(@config[:username], @config[:password]) do
+    config = Application.get_all_env(:astra)
+    case Astra.Auth.authorize_user(config[:username], config[:password]) do
     {:ok, %{authToken: token}} ->
       {:ok, token}
     other ->
