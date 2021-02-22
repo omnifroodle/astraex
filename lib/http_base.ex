@@ -1,5 +1,10 @@
 defmodule Astra.HttpBase do
   @moduledoc false
+  @version Mix.Project.config[:version]
+  
+  def user_agent() do
+    "AstraEx/#{@version}"
+  end
     
   defmacro __using__(opts) do  
     path = Keyword.get(opts, :path, "")
@@ -30,7 +35,8 @@ defmodule Astra.HttpBase do
         headers ++ [{"Content-Type", "application/json"},
                     {"accept", "application/json"},
                     {"x-cassandra-token", token},
-                    {"x-cassandra-request-id", UUID.uuid1()}]
+                    {"x-cassandra-request-id", UUID.uuid1()},
+                    {"User-Agent", Astra.HttpBase.user_agent()}]
       end
       
       def process_request_options(options), do: options ++ [ssl: [{:versions, [:'tlsv1.2']}]]

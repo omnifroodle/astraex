@@ -9,6 +9,7 @@ defmodule Astra.Auth.Http do
   # authorization token here
   def process_request_headers(headers) do
     headers ++ [{"Content-Type", "application/json"},
-                {"accept", "application/json"}]
+                {"accept", "application/json"},
+                {"User-Agent", Astra.HttpBase.user_agent()}]
   end
 end

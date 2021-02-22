@@ -10,6 +10,7 @@ defmodule Astra.Graphql.Http do
     {:ok, token} = Astra.TokenManager.get_token
     headers ++ [{"Content-Type", "application/graphql"},
                 {"accept", "application/json"},
-                {"x-cassandra-token", token}]
+                {"x-cassandra-token", token},
+                {"User-Agent", Astra.HttpBase.user_agent()}]
   end
 end
