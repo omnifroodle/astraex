@@ -6,6 +6,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 - User agent now specifics project and release version `AstraEx\0.0.0`
+- support for directly specifying Stargate URL in place of Astra region and id
 
 ## [0.3.2] - 2021-02-15
 ### New
