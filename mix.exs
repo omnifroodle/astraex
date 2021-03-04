@@ -4,7 +4,7 @@ defmodule Astra.MixProject do
   def project do
     [
       app: :astra,
-      version: "0.3.2",
+      version: "0.3.3",
       elixir: "~> 1.8",
       start_permanent: Mix.env() == :prod,
       description: "REST API adapter for astra.datastax.com and stargate.io",

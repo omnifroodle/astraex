@@ -17,9 +17,8 @@ defmodule Astra.TokenManager do
 
   @impl true
   def init(:ok) do
-    #schedule a regular update of the security token
-    Process.send_after(self(), :tick, @update_interval)
-    {:ok, get_new_token()}
+    config = Application.get_all_env(:astra)
+    {:ok, get_current_token(config[:username], config[:password], config[:application_token])}
   end
 
   @impl true
@@ -34,19 +33,24 @@ defmodule Astra.TokenManager do
 
   @impl true
   def handle_info(:tick, _) do
-    token = get_new_token()
+    config = Application.get_all_env(:astra)
+    token = get_current_token(config[:username], config[:password], nil)
     Process.send_after(self(), :tick, @update_interval)
     {:noreply, token}
   end
 
-  def get_new_token do
-    config = Application.get_all_env(:astra)
-    case Astra.Auth.authorize_user(config[:username], config[:password]) do
-    {:ok, %{authToken: token}} ->
-      {:ok, token}
-    other ->
-      Logger.warn("Failed to get Astra token, response was: #{inspect(other)}")
-      {:error, "something went wrong!"}
+  #fetch a token from the server and schedule a regular update of the security token
+  def get_current_token(username, password, nil) do
+    Process.send_after(self(), :tick, @update_interval)
+    case Astra.Auth.authorize_user(username, password) do
+      {:ok, %{authToken: token}} ->
+        {:ok, token}
+      other ->
+        Logger.warn("Failed to get Astra token, response was: #{inspect(other)}")
+        {:error, "something went wrong!"}
     end
   end
+  
+  #use a static app token, used when app token is provided in the config
+  def get_current_token(_,_,token), do: {:ok, token}
 end

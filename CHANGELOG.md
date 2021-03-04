@@ -5,8 +5,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
-- User agent now specifics project and release version `AstraEx\0.0.0`
+
+## [0.3.3] - 2021-03-04
+### New
 - support for directly specifying Stargate URL in place of Astra region and id
+- support for static application security tokens in place of username/password
+- User agent now specifics project and release version `AstraEx\0.0.0`
 
 ## [0.3.2] - 2021-02-15
 ### New
