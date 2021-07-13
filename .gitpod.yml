@@ -2,6 +2,8 @@ image:
   file: .gitpod.Dockerfile
 
 tasks:
-  - init: 'mix deps.get'
-    command: 'mix docs; ruby -run -ehttpd doc -p8000'
-    command: 'mix test.watch --stale'
+  - name: watch docs, run tests
+    init: 'mix deps.get'
+    command: |
+      mix docs; ruby -run -ehttpd doc -p8000
+      mix test.watch --stale
