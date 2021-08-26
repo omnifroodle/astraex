@@ -9,7 +9,7 @@ defmodule Astra.HttpBase do
   # Allow for either Astra regions and id or direct stargate urls
   def url_base() do
     config = Application.get_all_env(:astra)
-    find_base(config, Keyword.has_key?(config, :stargate_url))
+    find_base(config, Keyword.has_key?(config, :url))
   end
   
   def find_base(config, true), do: config[:url]

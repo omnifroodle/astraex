@@ -6,6 +6,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.4.1] - 2021-08-25
+- fix bad test for non astra stargate url
+
 ## [0.4.0] - 2021-08-25
 - doc updates for non-astra stargate server
 - changed default auth api path
