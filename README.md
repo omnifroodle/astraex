@@ -47,4 +47,5 @@ For non-astra stargate backends replace `id` and `region` in the config with the
 ```elixir
 config :astra,
   url: https://my.stargate.endpoint/api/,
-  application_token: System.get_env("ASTRA_APPLICATION_TOKEN") # this is and application security token for your database
+  username: System.get_env("ASTRA_USERNAME"),
+  password: System.get_env("ASTRA_PASSWORD")

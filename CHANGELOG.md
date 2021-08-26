@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.4.0] - 2021-08-25
+- doc updates for non-astra stargate server
+- changed default auth api path
+
 ## [0.3.3] - 2021-03-04
 ### New
 - support for directly specifying Stargate URL in place of Astra region and id
