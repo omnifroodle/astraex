@@ -4,7 +4,7 @@ defmodule Astra.MixProject do
   def project do
     [
       app: :astra,
-      version: "0.4.1",
+      version: "0.5.0",
       elixir: "~> 1.8",
       start_permanent: Mix.env() == :prod,
       description: "REST API adapter for astra.datastax.com and stargate.io",
@@ -25,14 +25,14 @@ defmodule Astra.MixProject do
       main: "readme"
     ]
   end
-  
+
   defp package do
     [
       licenses: ["Apache-2.0"],
       links: %{"GitHub" => "https://github.com/omnifroodle/astraex"}
     ]
   end
-  
+
   # Run "mix help compile.app" to learn about applications.
   def application do
     [
